@@ -32,6 +32,7 @@ MGL_DEFINE_FEATURE_ENCODE();
 MGL_DEFINE_FEATURE_IS_EQUAL();
 
 - (id)attributeForKey:(NSString *)key {
+    MGLLogDebug(@"Retrieving attributeForKey: %@", key);
     return self.attributes[key];
 }
 
@@ -67,6 +68,7 @@ MGL_DEFINE_FEATURE_ENCODE();
 MGL_DEFINE_FEATURE_IS_EQUAL();
 
 - (id)attributeForKey:(NSString *)key {
+    MGLLogDebug(@"Retrieving attributeForKey: %@", key);
     return self.attributes[key];
 }
 
@@ -103,6 +105,7 @@ MGL_DEFINE_FEATURE_ENCODE();
 MGL_DEFINE_FEATURE_IS_EQUAL();
 
 - (id)attributeForKey:(NSString *)key {
+    MGLLogDebug(@"Retrieving attributeForKey: %@", key);
     return self.attributes[key];
 }
 
@@ -139,6 +142,7 @@ MGL_DEFINE_FEATURE_ENCODE();
 MGL_DEFINE_FEATURE_IS_EQUAL();
 
 - (id)attributeForKey:(NSString *)key {
+    MGLLogDebug(@"Retrieving attributeForKey: %@", key);
     return self.attributes[key];
 }
 
@@ -165,6 +169,7 @@ MGL_DEFINE_FEATURE_ENCODE();
 MGL_DEFINE_FEATURE_IS_EQUAL();
 
 - (id)attributeForKey:(NSString *)key {
+    MGLLogDebug(@"Retrieving attributeForKey: %@", key);
     return self.attributes[key];
 }
 
@@ -201,6 +206,7 @@ MGL_DEFINE_FEATURE_ENCODE();
 MGL_DEFINE_FEATURE_IS_EQUAL();
 
 - (id)attributeForKey:(NSString *)key {
+    MGLLogDebug(@"Retrieving attributeForKey: %@", key);
     return self.attributes[key];
 }
 
@@ -243,6 +249,7 @@ MGL_DEFINE_FEATURE_ENCODE();
 MGL_DEFINE_FEATURE_IS_EQUAL();
 
 - (id)attributeForKey:(NSString *)key {
+    MGLLogDebug(@"Retrieving attributeForKey: %@", key);
     return self.attributes[key];
 }
 
