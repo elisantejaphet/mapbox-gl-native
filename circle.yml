@@ -48,7 +48,6 @@ workflows:
             branches:
               ignore: /.*/
       - macos-debug
-      - qt4-linux-gcc5-release
       - qt5-linux-gcc5-release
       - qt5-macos-debug
   nightly:
@@ -368,18 +367,28 @@ commands:
         command: make test-node
 
   run-node-linux-tests:
+    parameters:
+      node_version:
+        type: string
+        default: v8
     steps:
     - run:
         name: Run node tests
         command: |
+          . "$NVM_DIR/nvm.sh" && nvm use << parameters.node_version >>
           xvfb-run --server-args="-screen 0 1024x768x24" \
             logbt -- apitrace trace --api=egl -v make test-node
 
   run-node-linux-tests-recycle-map:
+    parameters:
+      node_version:
+        type: string
+        default: v8
     steps:
     - run:
         name: Run node tests (recycling the map object)
         command: |
+          . "$NVM_DIR/nvm.sh" && nvm use << parameters.node_version >>
           xvfb-run --server-args="-screen 0 1024x768x24" \
             logbt -- apitrace trace --api=egl -v make test-node-recycle-map
 
@@ -441,7 +450,7 @@ commands:
 jobs:
   nitpick:
     docker:
-      - image: mbgl/7d2403f42e:linux-clang-4
+      - image: mbgl/linux-clang-4:d121f629f7
     working_directory: /src
     environment:
       LIBSYSCONFCPUS: 4
@@ -476,7 +485,7 @@ jobs:
 # ------------------------------------------------------------------------------
   clang-tidy:
     docker:
-      - image: mbgl/7d2403f42e:linux-clang-3.9
+      - image: mbgl/linux-clang-3.9:2077f965ed
     working_directory: /src
     environment:
       LIBSYSCONFCPUS: 4
@@ -503,7 +512,7 @@ jobs:
         type: string
         default: "c++_static"
     docker:
-      - image: mbgl/feb0443038:android-ndk-r17
+      - image: mbgl/android-ndk-r17c:dd161efed6
     resource_class: large
     working_directory: /src
     environment:
@@ -565,7 +574,7 @@ jobs:
 # ------------------------------------------------------------------------------
   android-release:
     docker:
-      - image: mbgl/feb0443038:android-ndk-r17
+      - image: mbgl/android-ndk-r17c:dd161efed6
     resource_class: large
     working_directory: /src
     environment:
@@ -630,7 +639,7 @@ jobs:
 # ------------------------------------------------------------------------------
   node-clang39-release:
     docker:
-      - image: mbgl/7d2403f42e:linux-clang-3.9
+      - image: mbgl/linux-clang-3.9:2077f965ed
     working_directory: /src
     environment:
       LIBSYSCONFCPUS: 4
@@ -649,7 +658,7 @@ jobs:
 # ------------------------------------------------------------------------------
   node-gcc6-debug:
     docker:
-      - image: mbgl/7d2403f42e:linux-gcc-6
+      - image: mbgl/linux-gcc-6:d461f83b52
     resource_class: large
     working_directory: /src
     environment:
@@ -687,7 +696,7 @@ jobs:
 # ------------------------------------------------------------------------------
   linux-clang-38-libcxx-debug:
     docker:
-      - image: mbgl/7d2403f42e:linux-clang-3.8-libcxx
+      - image: mbgl/linux-clang-3.8-libcxx:d6800bdbb4
     working_directory: /src
     environment:
       LIBSYSCONFCPUS: 4
@@ -703,7 +712,7 @@ jobs:
 # ------------------------------------------------------------------------------
   linux-clang4-sanitize-address:
     docker:
-      - image: mbgl/7d2403f42e:linux-clang-4
+      - image: mbgl/linux-clang-4:d121f629f7
     working_directory: /src
     environment:
       LIBSYSCONFCPUS: 4
@@ -729,7 +738,7 @@ jobs:
 # ------------------------------------------------------------------------------
   linux-clang4-sanitize-undefined:
     docker:
-      - image: mbgl/7d2403f42e:linux-clang-4
+      - image: mbgl/linux-clang-4:d121f629f7
     working_directory: /src
     environment:
       LIBSYSCONFCPUS: 4
@@ -755,7 +764,7 @@ jobs:
 # ------------------------------------------------------------------------------
   linux-clang4-sanitize-thread:
     docker:
-      - image: mbgl/7d2403f42e:linux-clang-4
+      - image: mbgl/linux-clang-4:d121f629f7
     working_directory: /src
     environment:
       LIBSYSCONFCPUS: 4
@@ -781,7 +790,7 @@ jobs:
 # ------------------------------------------------------------------------------
   linux-gcc49-debug:
     docker:
-      - image: mbgl/7d2403f42e:linux-gcc-4.9
+      - image: mbgl/linux-gcc-4.9:e3818a77c1
     resource_class: large
     working_directory: /src
     environment:
@@ -802,7 +811,7 @@ jobs:
 # ------------------------------------------------------------------------------
   linux-gcc5-debug-coverage:
     docker:
-      - image: mbgl/7d2403f42e:linux-gcc-5
+      - image: mbgl/linux-gcc-5:54f59e3ac5
     resource_class: large
     working_directory: /src
     environment:
@@ -1005,33 +1014,9 @@ jobs:
       - upload-xcode-build-logs
 
 # ------------------------------------------------------------------------------
-  qt4-linux-gcc5-release:
-    docker:
-      - image: mbgl/7d2403f42e:linux-gcc-5-qt-4
-    resource_class: large
-    working_directory: /src
-    environment:
-      LIBSYSCONFCPUS: 2
-      JOBS: 2
-      BUILDTYPE: Release
-      GTEST_OUTPUT: xml
-      LD_PRELOAD: /usr/lib/x86_64-linux-gnu/libjemalloc.so
-    steps:
-      - install-dependencies
-      - build-qt-app
-      - build-qt-test
-      - save-dependencies
-      - run:
-          name: Run memory-load tests
-          command: |
-            xvfb-run --server-args="-screen 0 1024x768x24" \
-              make run-qt-test-Memory.*:*.Load
-            scripts/log_memory_benchmarks.sh test_detail.xml "Platform=Linux,Compiler=${_CC},Arch=$(uname -m)"
-
-# ------------------------------------------------------------------------------
   qt5-linux-gcc5-release:
     docker:
-      - image: mbgl/7d2403f42e:linux-gcc-5-qt-5.9
+      - image: mbgl/linux-gcc-5-qt-5.9:5132cfd29f
     resource_class: large
     working_directory: /src
     environment:
