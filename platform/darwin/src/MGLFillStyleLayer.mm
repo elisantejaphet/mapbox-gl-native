@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLFillStyleLayer.h"
+#import "MGLFillStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/fill_layer.hpp>
@@ -319,6 +320,23 @@ namespace mbgl {
     MGLFillTranslationAnchor fillTranslationAnchor;
     [self getValue:&fillTranslationAnchor];
     return fillTranslationAnchor;
+}
+
+@end
+
+@implementation MGLFillStyleLayerFactory {
+    mbgl::style::FillLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLFillStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLSymbolStyleLayer.h"
+#import "MGLSymbolStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/symbol_layer.hpp>
@@ -1540,6 +1541,23 @@ namespace mbgl {
     MGLTextTranslationAnchor textTranslationAnchor;
     [self getValue:&textTranslationAnchor];
     return textTranslationAnchor;
+}
+
+@end
+
+@implementation MGLSymbolStyleLayerFactory {
+    mbgl::style::SymbolLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLSymbolStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

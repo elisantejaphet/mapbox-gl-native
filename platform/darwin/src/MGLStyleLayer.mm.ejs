@@ -13,6 +13,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGL<%- camelize(type) %>StyleLayer.h"
+#import "MGL<%- camelize(type) %>StyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/<%- type.replace('-', '_') %>_layer.hpp>
@@ -246,3 +247,20 @@ namespace mbgl {
 <% } -%>
 @end
 <% } -%>
+
+@implementation MGL<%- camelize(type) %>StyleLayerFactory {
+    mbgl::style::<%- camelize(type) %>LayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGL<%- camelize(type) %>StyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
+}
+
+@end

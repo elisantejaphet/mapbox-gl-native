@@ -15,6 +15,7 @@
 namespace mbgl {
 namespace style {
 
+class LayerFactory;
 class LayerObserver;
 class Filter;
 
@@ -42,6 +43,8 @@ public:
     virtual ~Layer();
     // Note: LayerType is deprecated, do not use it.
     LayerType getType() const;
+    
+    LayerFactory* getFactory() const;
     std::string getID() const;
     // Source
     std::string getSourceID() const;
@@ -114,7 +117,7 @@ class LayerManager {
 public:
     /**
      * @brief A singleton getter.
-     * 
+     *
      * @return LayerManager* 
      */
     static LayerManager* get() noexcept;

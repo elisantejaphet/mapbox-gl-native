@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLFillExtrusionStyleLayer.h"
+#import "MGLFillExtrusionStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/fill_extrusion_layer.hpp>
@@ -330,6 +331,23 @@ namespace mbgl {
     MGLFillExtrusionTranslationAnchor fillExtrusionTranslationAnchor;
     [self getValue:&fillExtrusionTranslationAnchor];
     return fillExtrusionTranslationAnchor;
+}
+
+@end
+
+@implementation MGLFillExtrusionStyleLayerFactory {
+    mbgl::style::FillExtrusionLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLFillExtrusionStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

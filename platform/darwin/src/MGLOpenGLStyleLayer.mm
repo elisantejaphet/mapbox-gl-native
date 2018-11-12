@@ -1,4 +1,5 @@
 #import "MGLOpenGLStyleLayer.h"
+#import "MGLOpenGLStyleLayer_Private.h"
 
 #import "MGLMapView_Private.h"
 #import "MGLStyle_Private.h"
@@ -181,6 +182,22 @@ private:
  */
 - (void)setNeedsDisplay {
     [self.style.mapView setNeedsGLDisplay];
+}
+
+@end
+
+@implementation MGLOpenGLStyleLayerFactory {
+    mbgl::style::CustomLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer {
+    NSParameterAssert(rawLayer);
+    return [[MGLOpenGLStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

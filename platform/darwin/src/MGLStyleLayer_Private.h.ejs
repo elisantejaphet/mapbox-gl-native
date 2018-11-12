@@ -1,0 +1,23 @@
+<%
+  const doc = locals.doc;
+  const type = locals.type;
+  const layoutProperties = locals.layoutProperties;
+  const paintProperties = locals.paintProperties;
+  const enumProperties = locals.enumProperties;
+-%>
+// This file is generated.
+// Edit platform/darwin/scripts/generate-style-code.js, then run `make darwin-style-code`.
+
+#import "MGLStyleLayerManager.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface MGL<%- camelize(type) %>StyleLayerFactory : NSObject <MGLStyleLayerFactory>
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer;
+
+@property (nonatomic, readonly) mbgl::style::LayerFactory *rawLayerFactory;
+
+@end
+
+NS_ASSUME_NONNULL_END

@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLBackgroundStyleLayer.h"
+#import "MGLBackgroundStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/background_layer.hpp>
@@ -135,6 +136,23 @@
     transition.delay = MGLTimeIntervalFromDuration(transitionOptions.delay.value_or(mbgl::Duration::zero()));
 
     return transition;
+}
+
+@end
+
+@implementation MGLBackgroundStyleLayerFactory {
+    mbgl::style::BackgroundLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLBackgroundStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

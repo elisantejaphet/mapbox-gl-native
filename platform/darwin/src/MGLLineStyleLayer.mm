@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLLineStyleLayer.h"
+#import "MGLLineStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/line_layer.hpp>
@@ -561,6 +562,23 @@ namespace mbgl {
     MGLLineTranslationAnchor lineTranslationAnchor;
     [self getValue:&lineTranslationAnchor];
     return lineTranslationAnchor;
+}
+
+@end
+
+@implementation MGLLineStyleLayerFactory {
+    mbgl::style::LineLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLLineStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

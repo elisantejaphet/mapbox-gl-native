@@ -21,6 +21,10 @@ LayerType Layer::getType() const {
     return baseImpl->type;
 }
 
+LayerFactory* Layer::getFactory() const {
+    return baseImpl->getLayerFactory();
+}
+
 std::string Layer::getID() const {
     return baseImpl->id;
 }

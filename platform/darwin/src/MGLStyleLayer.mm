@@ -1,5 +1,6 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyle_Private.h"
+#import "MGLStyleLayerManager.h"
 
 #include <mbgl/style/style.hpp>
 #include <mbgl/style/layer.hpp>
@@ -18,6 +19,10 @@ const MGLExceptionName MGLInvalidStyleLayerException = @"MGLInvalidStyleLayerExc
 
 - (instancetype)initWithRawLayer:(mbgl::style::Layer *)rawLayer {
     if (self = [super init]) {
+        if ([MGLStyleLayerManager get] == nil) {
+            NSAssert(NO, @"Layer manager must be initialized.");
+            return nil;
+        }
         _identifier = @(rawLayer->getID().c_str());
         _rawLayer = rawLayer;
         _rawLayer->peer = LayerWrapper { self };

@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLRasterStyleLayer.h"
+#import "MGLRasterStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/raster_layer.hpp>
@@ -332,6 +333,23 @@ namespace mbgl {
     MGLRasterResamplingMode rasterResamplingMode;
     [self getValue:&rasterResamplingMode];
     return rasterResamplingMode;
+}
+
+@end
+
+@implementation MGLRasterStyleLayerFactory {
+    mbgl::style::RasterLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLRasterStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

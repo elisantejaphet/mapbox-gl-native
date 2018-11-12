@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLHillshadeStyleLayer.h"
+#import "MGLHillshadeStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/hillshade_layer.hpp>
@@ -234,6 +235,23 @@ namespace mbgl {
     MGLHillshadeIlluminationAnchor hillshadeIlluminationAnchor;
     [self getValue:&hillshadeIlluminationAnchor];
     return hillshadeIlluminationAnchor;
+}
+
+@end
+
+@implementation MGLHillshadeStyleLayerFactory {
+    mbgl::style::HillshadeLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLHillshadeStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

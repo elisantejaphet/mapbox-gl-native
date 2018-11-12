@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLCircleStyleLayer.h"
+#import "MGLCircleStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/circle_layer.hpp>
@@ -471,6 +472,23 @@ namespace mbgl {
     MGLCircleTranslationAnchor circleTranslationAnchor;
     [self getValue:&circleTranslationAnchor];
     return circleTranslationAnchor;
+}
+
+@end
+
+@implementation MGLCircleStyleLayerFactory {
+    mbgl::style::CircleLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLCircleStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end

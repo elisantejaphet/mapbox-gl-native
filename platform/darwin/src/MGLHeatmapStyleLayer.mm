@@ -7,6 +7,7 @@
 #import "MGLStyleLayer_Private.h"
 #import "MGLStyleValue_Private.h"
 #import "MGLHeatmapStyleLayer.h"
+#import "MGLHeatmapStyleLayer_Private.h"
 
 #include <mbgl/style/transition_options.hpp>
 #include <mbgl/style/layers/heatmap_layer.hpp>
@@ -205,6 +206,23 @@
         propertyValue = self.rawLayer->getDefaultHeatmapWeight();
     }
     return MGLStyleValueTransformer<float, NSNumber *>().toExpression(propertyValue);
+}
+
+@end
+
+@implementation MGLHeatmapStyleLayerFactory {
+    mbgl::style::HeatmapLayerFactory _rawLayerFactory;
+}
+
+- (MGLStyleLayer *)createWithRawLayer:(mbgl::style::Layer *)rawLayer
+{
+    NSParameterAssert(rawLayer);
+    return [[MGLHeatmapStyleLayer alloc] initWithRawLayer:rawLayer];
+}
+
+- (mbgl::style::LayerFactory *)rawLayerFactory
+{
+    return &_rawLayerFactory;
 }
 
 @end
