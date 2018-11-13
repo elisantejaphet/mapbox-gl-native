@@ -5,6 +5,7 @@ package com.mapbox.mapboxsdk.style.layers;
 import android.support.annotation.ColorInt;
 
 import com.mapbox.mapboxsdk.style.expressions.Expression;
+import com.mapbox.mapboxsdk.style.types.Formatted;
 import com.mapbox.mapboxsdk.utils.ColorUtils;
 
 /**
@@ -2111,6 +2112,16 @@ public class PropertyFactory {
    * @return property wrapper around String
    */
   public static PropertyValue<String> textField(String value) {
+    return new LayoutPropertyValue<>("text-field", value);
+  }
+
+  /**
+   * Value to use for a text label. If a plain `string` is provided, it will be treated as a `formatted` with default/inherited formatting options.
+   *
+   * @param value a Formatted value
+   * @return property wrapper around Formatted
+   */
+  public static PropertyValue<Formatted> textField(Formatted value) {
     return new LayoutPropertyValue<>("text-field", value);
   }
 
